@@ -6,6 +6,11 @@ class Router
 {
     private static $list = [];
 
+    /**
+     * //Метод регестриует роут для страниц
+     * @param $uri
+     * @param $page_name
+     */
     public static function page($uri, $page_name)
     {
         self::$list[] = [
@@ -14,6 +19,9 @@ class Router
         ];
     }
 
+    /**
+     *  Метод выводит нужную страницу
+     */
     public static function enable()
     {
         /*echo "<pre>";
@@ -32,6 +40,9 @@ class Router
         self::not_found_page();
     }
 
+    /**
+     *  // метод выводит 404-ую если метод enable() не нашел страницу
+     */
     private static function not_found_page()
     {
         require_once 'views/errors/404.php';
