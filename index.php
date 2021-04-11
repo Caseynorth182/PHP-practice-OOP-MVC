@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__. "/vendor/autoload.php";
+require_once __DIR__. "/router/routes.php";
 /*
  *
  *  login page - sign in (GET) - авторизация
@@ -9,6 +10,3 @@ require_once __DIR__. "/vendor/autoload.php";
  *  / profile - доступна админу и пользователю
  *
  * */
-
-
-var_dump($_GET['q']);
