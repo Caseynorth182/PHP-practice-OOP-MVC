@@ -24,27 +24,57 @@ class Router
      */
     public static function enable()
     {
-        /*echo "<pre>";
-        var_dump($page);
-        echo "</pre>";*/
+
 
         $query = $_GET['q'];
         foreach (self::$list as $page) {
 
             if ($page['uri'] === '/' . $query) {
-                require_once 'views/pages/' . $page['page_name'] . '.php';
-                die();
+                if ($page['post'] === true && $_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $action = new $page['class'];
+                    $method = $page['method'];
+                    if ($page['form-data'] && $page['files']) {
+                        $action->$method($_POST, $_FILES);
+                    } else if ($page['form-data'] && !$page['files']) {
+                        $action->$method($_POST);
+                    } else {
+                        $action->$method();
+                    }
+                    die();
+                } else {
+                    require_once 'views/pages/' . $page['page_name'] . '.php';
+                    die();
+                }
             }
         }
         //если страници не существует , выводим 404
-        self::not_found_page();
+        self::error('404');
     }
 
     /**
-     *  // метод выводит 404-ую если метод enable() не нашел страницу
+     *  // метод выводит страницу ошибки если метод enable() не нашел страницу
      */
-    private static function not_found_page()
+    public static function error($error)
     {
-        require_once 'views/errors/404.php';
+        require_once 'views/errors/' . $error . '.php';
     }
+
+    public static function post($uri, $class, $method, $formdata = false, $files = false)
+    {
+        self::$list[] = [
+            'uri' => $uri,
+            'class' => $class,
+            'method' => $method,
+            'post' => true,
+            'form-data' => $formdata,
+            'files' => $files
+        ];
+    }
+
+    public static function redirect($uri)
+    {
+        header('Location: ' . $uri);
+    }
+
+
 }

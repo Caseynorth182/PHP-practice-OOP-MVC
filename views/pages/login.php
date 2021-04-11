@@ -2,6 +2,10 @@
 
 use App\Services\Page;
 
+if($_SESSION['user']) {
+	\App\Services\Router::redirect('/profile');
+}
+
 ?>
 
 <!doctype html>
@@ -13,13 +17,13 @@ use App\Services\Page;
 
 <div class="container">
 	<h2 class="mt-4 col-md-6">Sign in</h2>
-	<form class="mt-4 col-md-6">
+	<form class="mt-4 col-md-6" method="post" action="/auth/login">
 		<div class="form-group">
 			<label for="exampleInputEmail1">Email address</label>
 			<input type="email"
 			       class="form-control"
 			       id="exampleInputEmail1"
-			       aria-describedby="emailHelp"
+			      name="email"
 			       placeholder="Enter email">
 			<small id="emailHelp"
 			       class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -29,7 +33,8 @@ use App\Services\Page;
 			<input type="password"
 			       class="form-control"
 			       id="exampleInputPassword1"
-			       placeholder="Password">
+			       placeholder="Password"
+			name="password">
 		</div>
 
 		<button type="submit"
